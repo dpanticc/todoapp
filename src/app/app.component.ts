@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Task } from './task.model';
+import { TaskService } from './task.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'todo-app';
+  tasks: Task[] = [];
+
+  constructor(private taskService: TaskService) {}
+
+  ngOnInit() {
+    this.tasks = this.taskService.getAllTasks();
+  }
+
+  addTask(task: Task) {
+    this.taskService.addTask(task);
+    this.tasks = this.taskService.getAllTasks(); // Update the tasks list
+  }
 }

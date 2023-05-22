@@ -1,0 +1,10 @@
+<div class="task-item" [class.completed]="task.completed" [priorityHighlight]="task.priority">
+  <span class="task-title">{{ task.name }}</span>
+  <p class = "desc">Description: {{ task.description }}</p>
+  <p class="due-date">Due Date: {{ task.dueDate | dueDateFormat }}</p>
+  <p class="priority">Priority: {{ task.priority }}</p> 
+    <div class="button-container">
+      <button class="complete-button" (click)="complete()">{{ task.completed ? 'Completed' : 'Mark completed' }}</button>
+      <button class="delete-button" (click)="delete()">Delete</button>
+    </div>
+</div>
