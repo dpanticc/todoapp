@@ -1,12 +1,3 @@
 <div class="container">
-     
-    <h1>Task Manager</h1>
-    
-    <div class="task-form-container">
-        <app-task-form (addTask)="addTask($event)"></app-task-form>
-    </div>
-    
-    <div class="task-item-container">
-        <app-task-list [tasks]="tasks"></app-task-list>
-    </div>
- </div>
+    <router-outlet></router-outlet>
+  </div>

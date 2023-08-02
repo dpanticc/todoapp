@@ -12,12 +12,18 @@ export class TaskListComponent {
 
   constructor(private taskService: TaskService) {}
 
-  completeTask(task: Task) {
-    this.taskService.markTaskAsCompleted(task);
+  completeTask(task: Task): void {
+    this.taskService.completeTask(task).subscribe((completedTask) => {
+      task.completed = completedTask.completed;
+    });
   }
 
-  deleteTask(task: Task) {
-    this.taskService.deleteTask(task);
-    this.tasks = this.taskService.getAllTasks(); // Update the tasks after deletion
+  deleteTask(task: Task): void {
+    this.taskService.deleteTask(task).subscribe(() => {
+      const index = this.tasks.indexOf(task);
+      if (index !== -1) {
+        this.tasks.splice(index, 1);
+      }
+    });
   }
 }

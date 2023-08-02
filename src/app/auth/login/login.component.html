@@ -1,0 +1,15 @@
+<div class="login-container" id = "logincont">
+    <form class="login-form" [formGroup]="loginForm" (submit)="onLoginSubmit()">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input class="form-control" type="text" id="username" formControlName="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input class="form-control" type="password" id="password" formControlName="password" required>
+      </div>
+      <button class="btn btn-primary" type="submit">Login</button>
+      <p *ngIf="error" class="error">{{ error }}</p>
+      <p>Don't have an account? <a href="#" (click)="showRegisterForm()">Register</a></p>
+    </form>
+  </div>

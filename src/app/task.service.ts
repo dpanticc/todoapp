@@ -1,29 +1,33 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Task } from './task.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  private tasks: Task[] = [];
+  private baseUrl = 'http://localhost:8080/api/tasks'; // Replace with your backend API URL
 
-  getAllTasks(): Task[] {
-    return this.tasks;
+  constructor(private http: HttpClient) {}
+
+  getAllTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>(this.baseUrl);
   }
 
-  addTask(task: Task): void {
-    this.tasks.push(task);
+  addTask(task: Task): Observable<Task> {
+    return this.http.post<Task>(this.baseUrl, task);
   }
 
-  markTaskAsCompleted(task: Task): void {
-    task.completed = !task.completed; // Toggle the completion state
-}
-  
+  completeTask(task: Task): Observable<Task> {
+    const updatedTask: Task = {
+      ...task,
+      completed: !task.completed,
+    };
+    return this.http.put<Task>(`${this.baseUrl}/${task.id}`, updatedTask);
+  }
 
-  deleteTask(task: Task): void {
-    const index = this.tasks.indexOf(task);
-    if (index !== -1) {
-      this.tasks.splice(index, 1);
-    }
+  deleteTask(task: Task): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${task.id}`);
   }
 }

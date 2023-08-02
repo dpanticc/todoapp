@@ -8,16 +8,39 @@ import { TaskService } from './task.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  
   tasks: Task[] = [];
 
   constructor(private taskService: TaskService) {}
 
-  ngOnInit() {
-    this.tasks = this.taskService.getAllTasks();
+  ngOnInit(): void {
+    this.loadTasks();
   }
 
-  addTask(task: Task) {
-    this.taskService.addTask(task);
-    this.tasks = this.taskService.getAllTasks(); // Update the tasks list
+  loadTasks(): void {
+    this.taskService.getAllTasks().subscribe((tasks) => {
+      this.tasks = tasks;
+    });
+  }
+
+  addTask(task: Task): void {
+    this.taskService.addTask(task).subscribe((addedTask) => {
+      this.tasks.push(addedTask);
+    });
+  }
+
+  completeTask(task: Task): void {
+    this.taskService.completeTask(task).subscribe((completedTask) => {
+      task.completed = completedTask.completed;
+    });
+  }
+
+  deleteTask(task: Task): void {
+    this.taskService.deleteTask(task).subscribe(() => {
+      const index = this.tasks.indexOf(task);
+      if (index !== -1) {
+        this.tasks.splice(index, 1);
+      }
+    });
   }
 }

@@ -5,12 +5,13 @@ import { AppComponent } from './app.component';
 import { TaskListComponent } from './task-list/task-list.component';
 import { TaskFormComponent } from './task-form/task-form.component';
 import { TaskItemComponent } from './task-item/task-item.component';
-import { FormsModule } from '@angular/forms';
 import { TaskService } from './task.service';
 import { DueDateFormatPipe } from './pipes/due-date-format.pipe';
 import { PriorityHighlightDirective } from './priority-highlight.directive'; 
-
-
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -19,14 +20,17 @@ import { PriorityHighlightDirective } from './priority-highlight.directive';
     TaskFormComponent,
     TaskItemComponent,
     DueDateFormatPipe,
-    PriorityHighlightDirective,
+    PriorityHighlightDirective
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AuthModule,
   ],
-  providers: [TaskService],
+  providers: [TaskService, AuthService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
