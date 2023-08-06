@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { Router } from '@angular/router'; // Import the Router
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -38,9 +38,12 @@ export class LoginComponent implements OnInit {
     const password = this.loginForm.get('password')?.value;
 
     this.authService.login({ username, password }).subscribe(
-      () => {
+      (token: string) => {
         console.log('Login successful');
-        // Handle successful login, e.g., redirect to the task manager page
+        console.log('Token retrieved:', token);
+
+        // After successful login, navigate to the /tasks page
+        this.router.navigate(['/tasks']);
       },
       (error) => {
         console.error('Login error:', error);
@@ -50,7 +53,6 @@ export class LoginComponent implements OnInit {
   }
 
   showRegisterForm() {
-    // Implement logic to navigate to the register page
     this.router.navigate(['/register']);
   }
 }

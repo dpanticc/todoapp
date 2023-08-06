@@ -12,7 +12,7 @@ export class TaskItemComponent {
   @Output() deleteTask = new EventEmitter<Task>();
 
   complete() {
-    this.completeTask.emit();  }
+    this.completeTask.emit(this.task);  }
 
   delete() {
     this.deleteTask.emit(this.task);

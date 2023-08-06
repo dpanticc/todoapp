@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +13,11 @@ export class RegisterComponent implements OnInit {
   loading = false;
   error = '';
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {}
+  constructor(
+    private formBuilder: FormBuilder, 
+    private authService: AuthService, 
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -36,15 +40,20 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    const username = this.registerForm.get('username')?.value;
     const email = this.registerForm.get('email')?.value;
+    if (!this.isValidEmail(email)) {
+      this.error = 'Please enter a valid email address.';
+      this.loading = false;
+      return;
+    }
+
+    const username = this.registerForm.get('username')?.value;
     const password = this.registerForm.get('password')?.value;
 
     this.authService.register({ username, email, password }).subscribe(
       () => {
         console.log('Registration successful');
-        // Handle successful registration, e.g., show success message or navigate to login page
-        this.router.navigate(['/login']); // Navigate to the login page after successful registration
+        this.router.navigate(['/login']); 
       },
       (error) => {
         console.error('Registration error:', error);
@@ -54,8 +63,12 @@ export class RegisterComponent implements OnInit {
     );
   }
 
+  private isValidEmail(email: string): boolean {
+    // Basic email validation (you can implement more complex validation if needed)
+    return email.includes('@');
+  }
+
   showLoginForm() {
-    // Implement logic to navigate to the login page
     this.router.navigate(['/login']);
   }
 }

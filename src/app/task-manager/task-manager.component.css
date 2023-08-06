@@ -1,0 +1,38 @@
+.app-container {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 1000px;
+  padding: 20px;
+  background-color: #303030;
+  color: #fff;
+}
+  
+.app-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+  
+  .task-list {
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+  .task-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .task-form-container {
+    
+    width: 100%;
+  }
+  
+  
+  .task-item-container {
+    width: 100%;
+  }
+
+  

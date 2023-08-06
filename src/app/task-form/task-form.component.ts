@@ -1,6 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Task } from '../task.model';
-import { TaskService } from '../task.service';
 
 @Component({
   selector: 'app-task-form',
@@ -16,10 +15,9 @@ export class TaskFormComponent {
     description: '',
     completed: false,
     dueDate: null,
-    priority: ''
+    priority: '',
+    user: null
   };
-
-  constructor(private taskService: TaskService) {}
 
   submitForm() {
     console.log('Submit form clicked');
@@ -39,7 +37,8 @@ export class TaskFormComponent {
       description: '',
       completed: false,
       dueDate: null,
-      priority: ''
+      priority: '',
+      user: null
     };
   }
 }

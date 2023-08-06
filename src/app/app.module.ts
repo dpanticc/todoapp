@@ -7,11 +7,13 @@ import { TaskFormComponent } from './task-form/task-form.component';
 import { TaskItemComponent } from './task-item/task-item.component';
 import { TaskService } from './task.service';
 import { DueDateFormatPipe } from './pipes/due-date-format.pipe';
-import { PriorityHighlightDirective } from './priority-highlight.directive'; 
-import { HttpClientModule } from '@angular/common/http';
+import { PriorityHighlightDirective } from './priority-highlight.directive';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // Import HTTP_INTERCEPTORS
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from './auth/auth.service';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module'; 
+import { RouterModule } from '@angular/router';
+import { TaskManagerComponent } from './task-manager/task-manager.component'; 
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { AuthModule } from './auth/auth.module';
     TaskFormComponent,
     TaskItemComponent,
     DueDateFormatPipe,
-    PriorityHighlightDirective
+    PriorityHighlightDirective,
+    TaskManagerComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,9 +31,17 @@ import { AuthModule } from './auth/auth.module';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AuthModule,
+    AuthModule, // Include the AuthModule here
+    RouterModule.forRoot([]), // Add this line with an empty array for now
   ],
-  providers: [TaskService, AuthService],
+  providers: [
+    TaskService, 
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor, // Provide the AuthInterceptor here
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

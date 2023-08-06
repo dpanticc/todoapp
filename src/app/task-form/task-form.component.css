@@ -1,44 +1,38 @@
-.login-container {
-  display: flex;
-  justify-content: center; /* Center the form horizontally */
-  align-items: center; /* Center the form vertically */
-  height: 100vh; /* Make the container take the full height of the viewport */
-}
-
-.login-form {
+.task-form {
   background-color: #232323;
   color: #fff;
-  padding: 20px; /* Reduce the padding to make it smaller */
+  padding: 30px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center the form items horizontally */
+  align-items: left;
 }
 
-.login-form .form-group {
+.task-form .form-group {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 10px;
 }
 
-.login-form .form-group label {
+.task-form .form-group label {
   text-align: left;
   margin-bottom: 5px;
   font-size: 16px;
   font-weight: bold;
 }
 
-.login-form .form-control {
+.task-form .form-control {
   background-color: #343434;
   color: #fff;
   border: none;
   padding: 8px;
   width: 100%;
   box-sizing: border-box;
-  max-width: 300px; /* Set a maximum width for the form */
+
 }
 
-.login-form .btn-primary {
+.task-form .btn-primary {
   background-color: #128aff;
   margin-top: 15px;
   color: #fff;
@@ -47,11 +41,12 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  width: 100%; /* Set the button width to 100% */
+  width: 30%;
   text-align: center;
   text-transform: uppercase;
+  margin: 15px auto 0; /* Adjust the margin property to center the button */
 }
 
-.login-form .btn-primary:hover {
+.task-form .btn-primary:hover {
   background-color: #0d6ce0;
 }

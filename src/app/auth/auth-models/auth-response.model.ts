@@ -1,3 +1,4 @@
 export interface AuthenticationResponse {
-    token: string;
+    access_token: string;
+    refresh_token: string;
   }
