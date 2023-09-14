@@ -3,10 +3,12 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  max-width: 1000px;
+  max-width: 750px;
   padding: 20px;
   background-color: #303030;
   color: #fff;
+
+  margin-top: 5rem;
 }
   
 .app-container h1 {

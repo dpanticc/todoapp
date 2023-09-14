@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { throwError, Observable } from 'rxjs';
+import { throwError, Observable, of } from 'rxjs';
 import { AuthRequest } from './auth-models/auth-request.model';
 import { AuthenticationResponse } from './auth-models/auth-response.model';
 import { RegisterRequest } from './auth-models/register-request.model';
 import { tap, map, catchError } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../task.model';
+import { HttpErrorResponse } from '@angular/common/http'; // Add this import
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root',
@@ -18,13 +21,17 @@ export class AuthService {
   private jwtHelper: JwtHelperService;
   public isRefreshing = false;
   private maxRefreshRetries = 3; // Set a reasonable maximum number of retries
+  private loggedInUser: string | null = null; 
+
   
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,  private router: Router) {
     this.jwtHelper = new JwtHelperService();
   }
 
   register(request: RegisterRequest): Observable<void> {
+    
     return this.http.post<void>(`${this.baseUrl}/register`, request);
+    
   }
 
   login(request: AuthRequest): Observable<string> {
@@ -32,8 +39,42 @@ export class AuthService {
       tap((response: AuthenticationResponse) => {
         this.setAuthToken(response.access_token); 
         this.setRefreshToken(response.refresh_token);
+        this.loggedInUser = request.username; // Set the loggedInUser
+        localStorage.setItem('loggedInUser', this.loggedInUser);
+        
       }),
       map((response: AuthenticationResponse) => response.access_token)
+    );
+  }
+
+  logout(username: string): Observable<void> {
+    const logoutRequest = { username };
+    console.log('Logging out...');
+  
+    return this.http.post<void>(`${this.baseUrl}/logout`, logoutRequest).pipe(
+      tap(() => {
+        this.removeTokens(); // Remove tokens
+        console.log('Logout successful');
+        console.log('Local Storage after logout:', localStorage);
+        this.loggedInUser = null; // Clear the loggedInUser when logging out
+        localStorage.removeItem("loggedInUser")
+      }),
+      catchError((error) => {
+        if (error instanceof HttpErrorResponse && error.status === 200) {
+          // Consider a 200 status as a successful logout
+          this.removeTokens(); // Remove tokens
+          console.log('Logout successful');
+          this.loggedInUser = null; // Clear the loggedInUser when logging out
+          this.router.navigate(['/login']);
+          localStorage.removeItem("loggedInUser")
+          console.log('Local Storage after logout:', localStorage);
+          return new Observable<void>(); // Return an empty observable of type void
+        } else {
+          console.error('Logout error:', error);
+          // Handle logout error as needed
+          return throwError('Logout failed');
+        }
+      })
     );
   }
 
@@ -41,23 +82,19 @@ export class AuthService {
     const authToken = this.getAuthToken();
       
     if (!authToken) {
-      // No token, so return an empty observable or throw an error
       return throwError('No JWT token available.');
     }
   
     const decodedToken = this.jwtHelper.decodeToken(authToken);
   
     if (!decodedToken || !decodedToken.sub) {
-      // Decoded token or user ID not available, so return an empty observable or throw an error
       return throwError('Invalid JWT token or user ID.');
     }
   
     const userId = decodedToken.sub;
   
-    // Replace 'getUser' with the actual API endpoint to fetch user details
     return this.http.get<User>(`${this.baseUrl}/getUser`).pipe(
       catchError((error) => {
-        // Handle errors if the user API endpoint request fails
         return throwError('Failed to fetch user details.');
       })
     );
@@ -93,6 +130,10 @@ export class AuthService {
     );
   }
 
+  getCurrentLoggedInUser(): string | null {
+    return localStorage.getItem('loggedInUser');
+  }
+  
   setAuthToken(token: string): void {
     console.log('Token set in local storage:', token);
     localStorage.setItem(this.authTokenKey, token);
@@ -107,7 +148,6 @@ export class AuthService {
       return null;
     }
 
-    console.log('Token retrieved from local storage:', token);
     return token;
   }
 
@@ -122,10 +162,16 @@ export class AuthService {
   removeTokens(): void {
     localStorage.removeItem(this.authTokenKey);
     localStorage.removeItem(this.refreshTokenKey);
+
   }
 
   public logoutUser(): void {
     this.removeTokens();
-    // Perform any additional cleanup or logout-related tasks
   }
+  
+  isAuthenticated(): boolean {
+    const authToken = this.getAuthToken();
+    return !!authToken;
+  }
+  
 }

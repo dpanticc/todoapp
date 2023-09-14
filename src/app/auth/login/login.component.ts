@@ -40,9 +40,7 @@ export class LoginComponent implements OnInit {
     this.authService.login({ username, password }).subscribe(
       (token: string) => {
         console.log('Login successful');
-        console.log('Token retrieved:', token);
 
-        // After successful login, navigate to the /tasks page
         this.router.navigate(['/tasks']);
       },
       (error) => {

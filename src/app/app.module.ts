@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { RouterModule } from '@angular/router';
 import { TaskManagerComponent } from './task-manager/task-manager.component'; 
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,8 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     DueDateFormatPipe,
     PriorityHighlightDirective,
     TaskManagerComponent,
+    NavbarComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -31,14 +34,14 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AuthModule, // Include the AuthModule here
-    RouterModule.forRoot([]), // Add this line with an empty array for now
+    AuthModule, 
+    RouterModule.forRoot([]) 
   ],
   providers: [
     TaskService, 
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor, // Provide the AuthInterceptor here
+      useClass: AuthInterceptor, 
       multi: true,
     },
   ],

@@ -15,12 +15,9 @@ export class TaskService {
     return this.http.get<Task[]>(`${this.baseUrl}`);
   }
   completeTask(task: Task): Observable<Task> {
-    // Set the 'completed' property to true for the task
-    task.completed = true;
-
-    // Send the updated task to the backend
     return this.http.put<Task>(`${this.baseUrl}/${task.id}`, task);
   }
+  
   addTask(task: Task): Observable<Task> {
     return this.http.post<Task>(`${this.baseUrl}`, task);
   }
@@ -31,7 +28,7 @@ export class TaskService {
   }
 
   getTasksForCurrentUser(): Observable<Task[]> {
-    // Replace 'getTasksForCurrentUser' with the actual API endpoint to fetch user-specific tasks
+
     return this.http.get<Task[]>(`${this.baseUrl}/user/tasks`);
   }
 }

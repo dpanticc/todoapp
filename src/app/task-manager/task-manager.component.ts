@@ -53,6 +53,7 @@ export class TaskManagerComponent implements OnInit {
       },
       (error) => {
         console.log('Failed to add task:', error);
+        alert("Enter a valid task")
       }
     );
   }

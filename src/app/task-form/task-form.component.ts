@@ -20,13 +20,14 @@ export class TaskFormComponent {
   };
 
   submitForm() {
-    console.log('Submit form clicked');
-    console.log('Task:', this.task);
 
     if (this.task.name.trim() !== '') {
       this.addTask.emit(this.task);
       console.log('Task added:', this.task);
+      alert("Task added successfully");
       this.resetForm();
+    }else{
+      alert("Enter a valid Task");
     }
   }
 

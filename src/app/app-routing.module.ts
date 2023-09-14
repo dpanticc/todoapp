@@ -3,12 +3,21 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { TaskManagerComponent } from './task-manager/task-manager.component';
-
+import { LoginGuard } from './auth/login.guard'; // Import your AuthGuard
+import { AuthGuard } from './auth/auth.guard';
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: '/tasks', pathMatch: 'full' },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [LoginGuard], // Use LoginGuard for the login route
+  },
   { path: 'register', component: RegisterComponent },
-  { path: 'tasks', component: TaskManagerComponent }, // Add this line to define the route for the task form
+  {
+    path: 'tasks',
+    component: TaskManagerComponent,
+    canActivate: [AuthGuard], // Use AuthGuard for protected routes
+  },
 ];
 
 @NgModule({

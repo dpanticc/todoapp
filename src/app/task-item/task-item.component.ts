@@ -16,5 +16,6 @@ export class TaskItemComponent {
 
   delete() {
     this.deleteTask.emit(this.task);
+    alert("Task deleted successfully")
   }
 }
