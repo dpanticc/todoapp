@@ -43,6 +43,7 @@ export class RegisterComponent implements OnInit {
     const email = this.registerForm.get('email')?.value;
     if (!this.isValidEmail(email)) {
       this.error = 'Please enter a valid email address.';
+      alert("Please enter a valid email address.");
       this.loading = false;
       return;
     }
@@ -53,11 +54,13 @@ export class RegisterComponent implements OnInit {
     this.authService.register({ username, email, password }).subscribe(
       () => {
         console.log('Registration successful');
+        alert("Registration has been successful")
         this.router.navigate(['/tasks']); 
       },
       (error) => {
         console.error('Registration error:', error);
         this.error = 'Registration failed';
+        alert("Please, enter valid information")
         this.loading = false;
       }
     );

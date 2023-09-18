@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Task } from '../task.model';
 import { TaskService } from '../task.service';
 
@@ -9,7 +9,11 @@ import { TaskService } from '../task.service';
 })
 export class TaskListComponent {
   @Input() tasks: Task[] = [];
+  @Output() sortTasksByDate = new EventEmitter<Task[]>();
 
+
+  
+  
   constructor(private taskService: TaskService) {}
 
   completeTask(task: Task): void {

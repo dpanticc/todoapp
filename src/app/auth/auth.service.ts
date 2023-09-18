@@ -41,7 +41,7 @@ export class AuthService {
         this.setRefreshToken(response.refresh_token);
         this.loggedInUser = request.username; // Set the loggedInUser
         localStorage.setItem('loggedInUser', this.loggedInUser);
-        
+      
       }),
       map((response: AuthenticationResponse) => response.access_token)
     );
